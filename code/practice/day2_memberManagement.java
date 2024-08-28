@@ -104,9 +104,9 @@ public class day2_memberManagement {
 
         boolean flag = false;
 
-        for (int i = 0; i < members.length; i++) {
-            if (name.equals(members[i][0])) {
-                System.out.println("[이름]"+members[i][0]+"[이메일]"+members[i][1]+"[연락처]"+members[i][2]);
+        for (String[] member : members) {
+            if (name.equals(member[0])) {
+                System.out.println("[이름]" + member[0] + "[이메일]" + member[1] + "[연락처]" + member[2]);
                 flag = true;
             }
         }
@@ -148,11 +148,33 @@ public class day2_memberManagement {
     }
 
     public static void deleteMember(String[][] members) {
-        //1.이메일로 삭제할 회원을 찾는다.
-        //2.찾으면 찾은 행정보(인덱스)값을 별도로 갖고있는다.
-        //2-1. 찾지 못했으면 안내 문구 출력후 종료시킨다
-        //3. 찾은 행 뒤의 행들을 모두 땡긴 후, 마지막 행을 null 처리한다.
-        //4. 전체 회원수도 차감시킨다.
+
+        System.out.println("[삭제] 삭제하려는 회원의 이메일을 입력하세요.");
+
+        Scanner sc = new Scanner(System.in);
+        String email = sc.nextLine();
+
+        int index = findUserIndexbyEmail(members, email);
+
+        if (index != -1) {
+
+            for(int i = index; i < totalMemberCnt-1; i++) {
+                members[i][0]=members[i+1][0];
+                members[i][1]=members[i+1][1];
+                members[i][2]=members[i+1][2];
+            }
+
+            members[totalMemberCnt-1][0] = null;
+            members[totalMemberCnt-1][1] = null;
+            members[totalMemberCnt-1][2] = null;
+
+            totalMemberCnt--;
+
+            System.out.println("삭제가 완료되었습니다.");
+        }else {
+            System.out.println("찾으시는 회원이 없습니다.");
+        }
+
     }
 
     public static void main(String[] args) {
@@ -181,6 +203,7 @@ public class day2_memberManagement {
                     updateMember(members);
                     break;
                 case 6:
+                    deleteMember(members);
                     break;
                 case 7:
                     System.out.println("이용해주셔서 감사합니다.");
