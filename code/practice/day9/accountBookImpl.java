@@ -10,16 +10,15 @@ public class accountBookImpl implements accountBook {
 
     private String date;
     private int menu;
-    private int total;
 
     private Map<String, List<String[]>> bookHistory;
+    private Map<String, Integer> moneyHistory;
 
     public accountBookImpl() {
         this.bookHistory = new HashMap<>();
-
+        this.moneyHistory = new HashMap<>();
         this.date = "";
         this.menu = 0;
-        this.total = 0;
     }
 
     public String getDate() {
@@ -36,14 +35,6 @@ public class accountBookImpl implements accountBook {
 
     public void setMenu(int menu) {
         this.menu = menu;
-    }
-
-    public int getTotal() {
-        return total;
-    }
-
-    public void setTotal(int total) {
-        this.total = total;
     }
 
 
@@ -79,16 +70,16 @@ public class accountBookImpl implements accountBook {
         if (bookHistory.containsKey(formattedDate)) {
             // 내역이 있으면 리스트에 추가
             bookHistory.get(formattedDate).add(item);
+            moneyHistory.put(formattedDate, moneyHistory.get(formattedDate) + price);
         } else {
             // 내역이 없으면 새로운 리스트 생성 후 추가
             List<String[]> itemList = new ArrayList<>();
             itemList.add(item);
             bookHistory.put(formattedDate, itemList);
+            moneyHistory.put(formattedDate, price);
         }
 
-        setTotal(total + price);
-
-        System.out.println("합계 : " + getTotal() + "원");
+        System.out.println("합계 : " + moneyHistory.get(formattedDate) + "원");
     }
 
     @Override
@@ -123,6 +114,9 @@ public class accountBookImpl implements accountBook {
                     String[] detail = details.get(i);
                     System.out.println((i + 1) + ". 물품 이름: " + detail[0] + ", 물품 가격: " + detail[1] + "원");
                 }
+
+                System.out.println("합계: "+ moneyHistory.get(detailDate));
+
             } else {
                 System.out.println("해당 날짜의 내역이 없습니다.");
             }
@@ -156,15 +150,16 @@ public class accountBookImpl implements accountBook {
             putRightDate();
 
             bookHistory.remove(getDate());
+            moneyHistory.remove(getDate());
         }
     }
 
     @Override
     public void deleteItem() {
         System.out.println("[내역삭제]");
-        if(bookHistory.isEmpty()){
+        if (bookHistory.isEmpty()) {
             System.out.println("내역이 없습니다.");
-        } else{
+        } else {
             System.out.println("삭제하려는 날짜(제목)를 입력해주세요.");
 
             displayDetail();
@@ -180,8 +175,18 @@ public class accountBookImpl implements accountBook {
 
             // 번호가 유효한지 확인하고, 삭제 처리
             if (itemNumber > 0 && itemNumber <= details.size()) {
+                String[] itemToRemove = details.get(itemNumber - 1);
+                int itemPrice = Integer.parseInt(itemToRemove[1]);  // 삭제할 아이템의 가격
+
+                // 내역 삭제
                 details.remove(itemNumber - 1);
                 System.out.println("선택한 내역이 삭제되었습니다.");
+
+                // 해당 날짜의 총액에서 삭제한 물품 가격을 차감
+                moneyHistory.put(detailDate, moneyHistory.get(detailDate) - itemPrice);
+
+                // 총액이 갱신된 후, 출력
+                System.out.println("해당 날짜의 총액이 " + moneyHistory.get(detailDate) + "원으로 갱신되었습니다.");
             } else {
                 System.out.println("잘못된 번호를 입력하셨습니다.");
             }
@@ -189,10 +194,10 @@ public class accountBookImpl implements accountBook {
             // 내역이 모두 삭제되면 해당 날짜의 기록도 삭제 처리
             if (details.isEmpty()) {
                 bookHistory.remove(detailDate);
+                moneyHistory.remove(detailDate);
                 System.out.println("해당 날짜의 모든 내역이 삭제되어 기록이 삭제되었습니다.");
             }
         }
-
     }
 
 }
