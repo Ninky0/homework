@@ -1,4 +1,4 @@
-package practice.day10;
+package practice.basic.day10;
 
 public class Start {
     public static void main(String[] args) {

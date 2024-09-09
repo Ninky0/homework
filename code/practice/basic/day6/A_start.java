@@ -1,4 +1,4 @@
-package practice.day6;
+package practice.basic.day6;
 
 
 public class A_start {

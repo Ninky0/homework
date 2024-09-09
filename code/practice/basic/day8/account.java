@@ -1,4 +1,4 @@
-package practice.day8;
+package practice.basic.day8;
 
 public interface account {
     void createAccount();

@@ -1,4 +1,4 @@
-package practice.day9;
+package practice.basic.day9;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

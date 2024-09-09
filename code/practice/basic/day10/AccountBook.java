@@ -1,4 +1,4 @@
-package practice.day10;
+package practice.basic.day10;
 
 public interface AccountBook {
     void createFolder();

@@ -1,10 +1,10 @@
-package practice;
+package practice.basic;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
-public class day4_houseBudget {
+public class day3_bankSystem {
 
     public static final int HISTORY_MAX_LENGTH = 10;
     public static String[][] histories = new String[12][HISTORY_MAX_LENGTH];

@@ -1,4 +1,4 @@
-package practice.day8;
+package practice.basic.day8;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
