@@ -359,4 +359,25 @@ public class NoticeImpl implements Notice {
         setUserno(-1);
     }
 
+    @Override
+    public void deleteArticleToo() {
+        System.out.println("탈퇴처리 전, 작성했던 모든 글이 삭제됩니다.");
+
+        String query = "DELETE FROM article WHERE userno = ?";
+
+        try (
+                Connection conn = connection();
+                PreparedStatement preparedStatement = conn.prepareStatement(query);
+        ) {
+            preparedStatement.setInt(1, getUserno());
+            int result = preparedStatement.executeUpdate();
+            if (result > 0) {
+                System.out.println("글 삭제 완료. 탈퇴처리하겠습니다.");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

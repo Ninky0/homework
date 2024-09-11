@@ -47,4 +47,7 @@ public interface Notice {
 
     // 회원탈퇴
     void withdrawUsr();
+
+    // 탈퇴하려는 사용자의 글도 함께 삭제
+    void deleteArticleToo();
 }
